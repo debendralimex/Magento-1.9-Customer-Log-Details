@@ -1,0 +1,197 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Limex_Customerlog>
+            <version>0.1.0</version>
+        </Limex_Customerlog>
+    </modules>
+	
+	
+	<default>
+        <customerlog_options>
+            <admin_user_monitoring>
+                <limex_customerlog_admin_user_change_monitoring_enable>1</limex_customerlog_admin_user_change_monitoring_enable>
+                <limex_customerlog_admin_user_login_monitoring_enable>0</limex_customerlog_admin_user_login_monitoring_enable>
+                <limex_customerlog_admin_user_email_subject>Admin User Record Changed/Created</limex_customerlog_admin_user_email_subject>
+            </admin_user_monitoring>
+        </customerlog_options>
+    </default>
+
+	
+	
+    <global>
+     
+	 
+	<events>		
+		
+		<customer_login>
+			<observers>
+				<customerloginlog>
+					<type>model</type>
+					<class>Limex_Customerlog_Model_Observer</class>
+					<method>customerLogin</method>
+				</customerloginlog>
+			</observers>
+		</customer_login>
+		
+		<!-- <customer_customer_authenticated>
+			<observers>
+				<customerloginlogs>
+					<type>model</type>
+					<class>Limex_Customerlog_Model_Observer</class>
+					<method>customerLogin</method>
+				</customerloginlogs>
+			</observers>
+		</customer_customer_authenticated> -->
+		
+		<!-- <customer_register_success>
+                <observers>
+                    <limex_customer_register_success>
+                        <type>singleton</type>
+                        <class>Limex_Customerlog_Model_Observer</class>
+                        <method>customerRegisterSuccess</method>
+                    </limex_customer_register_success>
+                </observers>
+            </customer_register_success> -->
+			
+		<!-- <checkout_type_onepage_save_order_after>
+                <observers>
+                    <limex_CheckoutNewRegistration>
+                        <type>model</type>
+                        <class>Limex_Customerlog_Model_Observer</class>
+                        <method>checkoutTypeOnepageSaveOrderAfter</method>
+                    </limex_CheckoutNewRegistration>
+                </observers>
+        </checkout_type_onepage_save_order_after> -->
+		
+		<sales_order_place_after>
+            <observers>
+                <salesorder>
+                    <type>singleton</type>
+                    <class>Limex_Customerlog_Model_Observer</class>
+                    <method>OrderSuccess</method>
+                </salesorder>
+            </observers>
+        </sales_order_place_after>
+		
+		<sales_order_payment_cancel>
+            <observers>
+                <salesorderfail>
+                    <type>singleton</type>
+                    <class>Limex_Customerlog_Model_Observer</class>
+                    <method>OrderUnSuccess</method>
+                </salesorderfail>
+            </observers>
+        </sales_order_payment_cancel>
+		
+		
+		
+		
+		<customer_save_after>
+			<observers>
+				<savecustomer>
+					<type>model</type>
+				   <class>Limex_Customerlog_Model_Observer</class>
+				 <method>customerRegisterSuccess</method>
+				</savecustomer>
+			</observers>
+		</customer_save_after>
+		
+		<customer_address_save_before>
+			<observers>
+				<savecustomer>
+					<type>model</type>
+				   <class>Limex_Customerlog_Model_Observer</class>
+				 <method>customerAddUpdate</method>
+				</savecustomer>
+			</observers>
+		</customer_address_save_before>
+
+		
+		
+		 <!-- watch for admin save user event -->
+            <admin_user_save_after>
+                <observers>
+                    <limex_user_model_observer>
+                        <type>singleton</type>                          
+                        <class>Limex_Customerlog_Model_Observer</class>
+                        <method>logAdminUserSave</method>
+                    </limex_user_model_observer>
+                </observers>
+            </admin_user_save_after>
+
+            <!-- watch for admin delete user event, after commit -->
+            <admin_user_delete_before>
+                <observers>
+                    <limex_delete_model_observer>
+                        <type>singleton</type>                          
+                        <class>Limex_Customerlog_Model_Observer</class>
+                        <method>logAdminUserDelete</method>
+                    </limex_delete_model_observer>
+                </observers>
+            </admin_user_delete_before>
+
+            <!-- watch for successful admin user logins -->
+            <admin_session_user_login_success>
+                <observers>
+                    <limex_login_model_observer>
+                        <type>singleton</type>                          
+                        <class>Limex_Customerlog_Model_Observer</class>
+                        <method>logAdminUserLoginSuccess</method>
+                    </limex_login_model_observer>
+                </observers>
+            </admin_session_user_login_success>
+
+
+            <!-- watch for failed admin user logins -->
+            <admin_session_user_login_failed>
+                <observers>
+                    <limex_model_observer>
+                        <type>singleton</type>                          
+                        <class>Limex_Customerlog_Model_Observer</class>
+                        <method>logAdminUserLoginFail</method>
+                    </limex_model_observer>
+                </observers>
+            </admin_session_user_login_failed>
+		
+    </events>
+	 
+		 
+	 
+		<models>
+            <limex_customerlog>
+                <class>Limex_Customerlog_Model</class>
+            </limex_customerlog>          
+        </models>
+	    <helpers>
+            <limex_customerlog>
+                <class>Limex_Customerlog_Helper</class>
+            </limex_customerlog>
+        </helpers>
+    </global>
+	  <admin />
+    <adminhtml />
+	
+	
+	 <adminhtml>
+        <acl>
+            <resources>
+                <admin>
+                    <children>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <customerlog_options>
+                                            <title>FOO</title>
+                                        </customerlog_options>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+    </adminhtml>
+</config>
